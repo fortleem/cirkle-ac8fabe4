@@ -178,8 +178,3 @@ All colors MUST be HSL.
 
 .font-display { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em; }
 .font-arabic { font-family: 'Noto Kufi Arabic', 'Space Grotesk', sans-serif; }
-
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap');
-}
-  }
-}
