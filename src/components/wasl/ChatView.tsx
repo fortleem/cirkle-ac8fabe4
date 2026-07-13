@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Phone, Video, Search, MoreHorizontal, Pin, Sparkles } from "lucide-react";
+import { Phone, Video, Search, MoreHorizontal, Pin, Sparkles, ShieldCheck, Ghost } from "lucide-react";
 import { Avatar } from "./Avatar";
 import { MessageBubble } from "./MessageBubble";
 import { Composer } from "./Composer";
 import { conversations, messagesFor, type Message } from "./data";
+import { useWasl, DISAPPEAR_LABELS } from "./state";
 
 interface Props { conversationId: string; }
 
 export function ChatView({ conversationId }: Props) {
+  const { settings, setPrivacyOpen, search } = useWasl();
   const convo = useMemo(() => conversations.find(c => c.id === conversationId)!, [conversationId]);
   const initial = messagesFor[conversationId] ?? messagesFor.noor;
   const [messages, setMessages] = useState<Message[]>(initial);
@@ -22,8 +24,20 @@ export function ChatView({ conversationId }: Props) {
   }, [messages]);
 
   const handleSend = (text: string) => {
-    setMessages(prev => [...prev, { id: String(Date.now()), author: "me", text, time: "now", kind: "text" }]);
+    const id = String(Date.now());
+    const disappearIn = settings.disappearing !== "off" ? DISAPPEAR_LABELS[settings.disappearing] : undefined;
+    setMessages(prev => [...prev, { id, author: "me", text, time: "now", kind: "text", status: "pending", disappearIn }]);
+    // simulate E2EE flow: pending → sent → delivered → read
+    setTimeout(() => setMessages(prev => prev.map(m => m.id === id ? { ...m, status: "sent" } : m)), 400);
+    setTimeout(() => setMessages(prev => prev.map(m => m.id === id ? { ...m, status: "delivered" } : m)), 900);
+    setTimeout(() => setMessages(prev => prev.map(m => m.id === id ? { ...m, status: "read" } : m)), 1800);
   };
+
+  const visibleMessages = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return messages;
+    return messages.filter(m => (m.text ?? "").toLowerCase().includes(q));
+  }, [messages, search]);
 
   return (
     <section className="relative flex h-full flex-1 flex-col">
@@ -50,21 +64,29 @@ export function ChatView({ conversationId }: Props) {
           </div>
         </div>
         <div className="ml-auto flex items-center gap-1">
+          {settings.ghostMode && (
+            <span className="mr-2 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-violet">
+              <Ghost className="h-3 w-3" /> ghost
+            </span>
+          )}
           <HeaderBtn><Sparkles className="h-4 w-4 text-neon" /></HeaderBtn>
           <HeaderBtn><Search className="h-4 w-4" /></HeaderBtn>
           <HeaderBtn><Phone className="h-4 w-4" /></HeaderBtn>
           <HeaderBtn><Video className="h-4 w-4" /></HeaderBtn>
+          <button onClick={() => setPrivacyOpen(true)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-white/5 transition">
+            <ShieldCheck className="h-4 w-4" />
+          </button>
           <HeaderBtn><MoreHorizontal className="h-4 w-4" /></HeaderBtn>
         </div>
       </div>
 
       {/* messages */}
       <div ref={scrollerRef} className="relative flex-1 overflow-y-auto scrollbar-none px-6 py-6 space-y-4">
-        <DayDivider label="Today" />
-        {messages.map(m => (
+        <DayDivider label={search ? `${visibleMessages.length} result${visibleMessages.length===1?"":"s"} for "${search}"` : "Today"} />
+        {visibleMessages.map(m => (
           <MessageBubble key={m.id} msg={m} mine={m.author === "me"} />
         ))}
-        {convo.presence === "typing" && (
+        {convo.presence === "typing" && settings.typingIndicators && !search && (
           <div className="flex items-center gap-2 animate-fade-in">
             <Avatar label={convo.avatar} hue={convo.hue} size={28} />
             <div className="glass rounded-2xl rounded-bl-md px-3 py-2.5">
