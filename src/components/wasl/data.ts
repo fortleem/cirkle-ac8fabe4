@@ -28,6 +28,10 @@ export interface Message {
   image?: { src: string; w: number; h: number; alt: string };
   attachment?: { name: string; size: string; ext: string };
   replyTo?: { author: string; text: string };
+  status?: "pending" | "sent" | "delivered" | "read";
+  forwardLocked?: boolean;
+  disappearIn?: string;
+  translated?: string;
 }
 
 export const conversations: Conversation[] = [
@@ -43,11 +47,11 @@ export const conversations: Conversation[] = [
 
 export const messagesFor: Record<string, Message[]> = {
   noor: [
-    { id: "m1", author: "noor", text: "habibi did you see the new Circle build?", time: "10:42", kind: "text" },
-    { id: "m2", author: "noor", text: "the orb motion is unreal 🌀", time: "10:42", kind: "text", reactions: [{ emoji: "🔥", count: 3, mine: true }] },
-    { id: "m3", author: "me", text: "shipping the Wasl module now. wait till you see the bubbles.", time: "10:44", kind: "text" },
+    { id: "m1", author: "noor", text: "habibi did you see the new Circle build?", time: "10:42", kind: "text", translated: "يا حبيبي شفت بناء Circle الجديد؟" },
+    { id: "m2", author: "noor", text: "the orb motion is unreal 🌀", time: "10:42", kind: "text", reactions: [{ emoji: "🔥", count: 3, mine: true }], forwardLocked: true },
+    { id: "m3", author: "me", text: "shipping the Wasl module now. wait till you see the bubbles.", time: "10:44", kind: "text", status: "read" },
     { id: "m4", author: "noor", time: "10:45", kind: "voice", voice: { duration: "0:14", waveform: [.2,.5,.7,.4,.8,.6,.3,.9,.5,.7,.4,.6,.8,.5,.3,.6,.7,.4,.5,.3,.8,.6,.4,.7,.5,.3,.6,.4,.5,.7] } },
-    { id: "m5", author: "me", text: "اللي شفته أحلى بكتير 😎", time: "10:46", kind: "text", reactions: [{ emoji: "💎", count: 1 }, { emoji: "✨", count: 2, mine: true }] },
+    { id: "m5", author: "me", text: "اللي شفته أحلى بكتير 😎", time: "10:46", kind: "text", reactions: [{ emoji: "💎", count: 1 }, { emoji: "✨", count: 2, mine: true }], status: "delivered", disappearIn: "1h" },
     { id: "m6", author: "noor", text: "send a preview when ready", time: "10:47", kind: "text", replyTo: { author: "me", text: "shipping the Wasl module now." } },
   ],
 };
