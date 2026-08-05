@@ -148,7 +148,7 @@ export function devApiPlugin(): Plugin {
           } as any);
 
           res.statusCode = response.status;
-          response.headers.forEach((value, key) => res.setHeader(key, value));
+          response.headers.forEach((value: string, key: string) => res.setHeader(key, value));
           res.end(Buffer.from(await response.arrayBuffer()));
         } catch (err) {
           console.error("[dev-api] error", err);
