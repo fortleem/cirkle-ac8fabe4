@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { devApiPlugin } from "./dev-api-plugin";
 
 // Cirkle (دواير) — Vite config for Cloudflare Pages
 // SPA frontend; backend API lives in /functions (Cloudflare Pages Functions with D1 binding)
@@ -10,7 +11,7 @@ export default defineConfig(() => ({
     port: 8080,
     hmr: { overlay: false },
   },
-  plugins: [react()],
+  plugins: [react(), devApiPlugin()],
   resolve: {
     alias: { "@": path.resolve(__dirname, "./src") },
     dedupe: [
