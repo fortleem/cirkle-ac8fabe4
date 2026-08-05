@@ -1,0 +1,8 @@
+# Cirkle — local Cloudflare Pages Functions variables (copy to .dev.vars, never commit real keys)
+# Values are also read from the process environment by the Vite dev API plugin.
+GROQ_API_KEY=
+GEMINI_API_KEY=
+HF_API_KEY=
+OPENAI_API_KEY=
+OPENREGISTRY_PAT=
+ORIZON_VISA_API_KEY=
