@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "python3 tests/e2e/wasl_smoke.py",
     "pages:dev": "wrangler pages dev dist --ip 0.0.0.0 --port 3000",
     "pages:deploy": "npm run build && wrangler pages deploy dist",
     "db:migrate:local": "wrangler d1 migrations apply cirkle-production --local",
