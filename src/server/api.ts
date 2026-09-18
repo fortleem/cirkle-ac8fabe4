@@ -9,12 +9,17 @@ import { getNames, ALL_LANGS } from './i18n'
 import { groqChat, openaiChat, sageChat, generateSmartReplies, moderateContent, analyzeSoulResonance, hfEmbed, hfVision, SAGE_SYSTEM, pillarContext, GROQ_CHAT_MODEL, GROQ_FAST_MODEL, OPENAI_CHAT_MODEL, type SageMsg } from './ai'
 import { brainAsk, providerHealth, geminiWebSearch, classifyIntent, type BrainEnv } from './brain'
 import { registerCommitCitizen } from './commitCitizen'
+import { registerWaslPlus } from './waslPlus'
+import { registerMashahdPlus } from './mashahdPlus'
 
 export const api = new Hono<{ Bindings: Env }>()
 api.use('*', cors())
 
 // Wasl Commit Service + Citizen Emergency Witness routes
 registerCommitCitizen(api)
+// Ported parity routes from the standalone Wasl and Mashahd apps
+registerWaslPlus(api)
+registerMashahdPlus(api)
 
 // ─── HEALTH / META ──────────────────────────────────────────────────────────
 api.get('/health', (c) => c.json({ ok: true, service: 'cirkle-webapp', ts: Date.now() }))
