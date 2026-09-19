@@ -19,6 +19,7 @@ import {
 } from "@/lib/api";
 import { fireShare } from "@/components/shell/ShareSheet";
 import TheaterPlayer from "@/components/futuristic/TheaterPlayer";
+import MashahdPlusHub from "@/components/mashahd/MashahdPlusHub";
 
 import { getMe } from "@/lib/session";
 const ME = getMe();
@@ -44,6 +45,7 @@ export function MashahdScreen() {
   const [commentsOf, setCommentsOf] = useState<Video | null>(null);
   const [analytics, setAnalytics] = useState<Video | null>(null);
   const [theater, setTheater] = useState<Video | null>(null);
+  const [showPlus, setShowPlus] = useState(false);
 
   const load = (f: Filter) => {
     setLoading(true);
@@ -83,6 +85,13 @@ export function MashahdScreen() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowPlus(true)}
+            className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-secondary/10 transition"
+            title="Mashahd+ · playlists, continue watching, studio, AI"
+          >
+            <Sparkles className="w-4 h-4 text-secondary" />
+          </button>
           <button
             onClick={() => setAnalytics(videos[0] ?? null)}
             className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-secondary/10 transition"
