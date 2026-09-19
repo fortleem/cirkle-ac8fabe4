@@ -48,7 +48,7 @@ export default function WaslPlusHub({ onClose }: { onClose: () => void }) {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    const uid = ME.id;
+    const uid = ME;
     const paths: Record<TabKey, string> = {
       stories: `/wasl-plus/stories?user_id=${uid}`,
       scheduled: `/wasl-plus/scheduled-messages?user_id=${uid}`,

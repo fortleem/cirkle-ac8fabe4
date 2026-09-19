@@ -47,7 +47,7 @@ function AITools() {
     if (!q.trim()) return;
     setBusy(true); setOut(null);
     try {
-      const r = await apiPost<any>("/ai/advanced-search", { query: q, user_id: ME.id });
+      const r = await apiPost<any>("/ai/advanced-search", { query: q, user_id: ME });
       setOut(typeof r?.answer === "string" ? r.answer : JSON.stringify(r, null, 2));
     } catch (e: any) {
       setOut("Could not reach the AI service right now.");
@@ -84,7 +84,7 @@ export default function MashahdPlusHub({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     if (tab === "ai") { setLoading(false); return; }
-    const uid = ME.id;
+    const uid = ME;
     const paths: Record<Exclude<TabKey, "ai">, string> = {
       playlists: `/mashahd/playlists?user_id=${uid}`,
       continue: `/mashahd/continue-watching?user_id=${uid}`,
