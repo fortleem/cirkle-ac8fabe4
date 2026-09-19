@@ -192,6 +192,7 @@ export function MashahdScreen() {
 
       {/* Modals */}
       <AnimatePresence>
+        {showPlus && <MashahdPlusHub onClose={() => setShowPlus(false)} />}
         {tipping && <TipModal video={tipping} onClose={() => setTipping(null)} />}
         {commentsOf && <CommentsDrawer video={commentsOf} onClose={() => setCommentsOf(null)} />}
         {analytics && <AnalyticsModal video={analytics} onClose={() => setAnalytics(null)} />}
