@@ -21,6 +21,7 @@ import { EchoPlayback } from "@/components/futuristic/EchoPlayback";
 import { fireShare } from "@/components/shell/ShareSheet";
 import WaslComposerPro from "@/components/futuristic/WaslComposerPro";
 import MadrasaWorkspace from "@/components/futuristic/MadrasaWorkspace";
+import WaslPlusHub from "@/components/wasl/WaslPlusHub";
 
 import { getMe } from "@/lib/session";
 const ME = getMe();
@@ -37,6 +38,7 @@ export function WaslScreen() {
   // Modals
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [showPlus, setShowPlus] = useState(false);
 
   const loadRooms = () => {
     setLoading(true);
@@ -76,6 +78,13 @@ export function WaslScreen() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowPlus(true)}
+            className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-secondary/10 transition"
+            title="Wasl+ · stories, scheduled, folders, saved, contacts"
+          >
+            <Sparkles className="w-4 h-4 text-secondary" />
+          </button>
           <button
             onClick={() => setShowPrivacy(true)}
             className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-secondary/10 transition"
@@ -252,6 +261,7 @@ export function WaslScreen() {
       </div>
 
       <AnimatePresence>
+        {showPlus && <WaslPlusHub onClose={() => setShowPlus(false)} />}
         {showPrivacy && <PrivacyDrawer onClose={() => setShowPrivacy(false)} />}
         {showCreate && (
           <CreateRoomModal
